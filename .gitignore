@@ -1,35 +1,36 @@
 # ======================
-# FRONTEND 
+# FRONTEND (carpeta: frontend)
 # ======================
 
 # Logs
-/front/logs
-/front/*.log
-/front/npm-debug.log*
-/front/yarn-debug.log*
-/front/yarn-error.log*
-/front/pnpm-debug.log*
-/front/lerna-debug.log*
+/frontend/logs
+/frontend/*.log
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+/frontend/pnpm-debug.log*
+/frontend/lerna-debug.log*
 
 # Node modules & build
-/front/node_modules
-/front/dist
-/front/dist-ssr
-/front/*.local
+/frontend/node_modules
+/frontend/dist
+/frontend/dist-ssr
+/frontend/*.local
 
 # Editor directories and files
-/front/.vscode/*
-!/front/.vscode/extensions.json
-/front/.idea
-/front/.DS_Store
-/front/*.suo
-/front/*.ntvs*
-/front/*.njsproj
-/front/*.sln
-/front/*.sw?
+/frontend/.vscode/*
+!/frontend/.vscode/extensions.json
+/frontend/.idea
+/frontend/.DS_Store
+/frontend/*.suo
+/frontend/*.ntvs*
+/frontend/*.njsproj
+/frontend/*.sln
+/frontend/*.sw?
 
 # ======================
-# BACKEND 
+# BACKEND (carpeta: backend)
 # ======================
 
-/back/node_modules
+/backend/node_modules
+/backend/.env

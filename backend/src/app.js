@@ -2,26 +2,45 @@ import express from "express";
 import mongoose from "mongoose";
 import passport from "passport";
 import authRoutes from "./routes/authRoutes.js";
+import productsRouter from "./routes/productRoutes.js";
+import cartsRouter from "./routes/cartRoutes.js";
 import configurePassport from "./config/passport.js";
 import dotenv from "dotenv";
 import cors from "cors";
+import customResponse from "./middlewares/customResponse.js";
 
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use(express.json());
-app.use(cors());
-app.use(passport.initialize());
+const MONGO_URI = process.env.MONGO_URI;
 
-configurePassport(passport);
-
-app.use("/api/auth", authRoutes);
+const FRONTEND_URL =
+    process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_URL_PROD
+        : process.env.FRONTEND_URL_LOCAL;
 
 mongoose
-    .connect("mongodb://localhost:27017/coder-auth")
+    .connect(MONGO_URI)
     .then(() => console.log("MongoDB conectado"))
     .catch((err) => console.error("Error conectando a MongoDB: ", err));
 
-const PORT = process.env.PORT || 5000;
+app.use(express.json());
+app.use(
+    cors({
+        origin: FRONTEND_URL,
+        credentials: true,
+    })
+);
+
+app.use(passport.initialize());
+configurePassport(passport);
+
+app.use(customResponse);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
