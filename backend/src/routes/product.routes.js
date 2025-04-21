@@ -4,8 +4,10 @@ import {
     getProductById,
     getProducts,
     updateProduct,
-} from "../controllers/productsController.js";
-import router from "./cartRoutes.js";
+} from "../controllers/products.controller.js";
+import { Router } from "express";
+
+const router = Router();
 
 router.get("/", getProducts);
 

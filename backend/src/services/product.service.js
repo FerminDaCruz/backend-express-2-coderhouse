@@ -42,7 +42,7 @@ export const updateProduct = async (pid, product) => {
 };
 
 export const deleteProduct = async (pid) => {
-    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+    const deletedProduct = await Product.findByIdAndDelete(pid);
     if (!deletedProduct) throw new Error("Product not found");
     return deletedProduct;
 };

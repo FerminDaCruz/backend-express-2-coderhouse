@@ -13,7 +13,7 @@ export const registerUser = async ({
 }) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-        return res.status(400).json({ msg: "El usuario ya existe" });
+        throw new Error("the user already exists");
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
@@ -28,18 +28,20 @@ export const registerUser = async ({
         role,
     });
 
-    return await newUser.save();
+    const savedUser = await newUser.save();
+
+    return savedUser;
 };
 
 export const loginUser = async ({ email, password }) => {
     const user = await User.findOne({ email });
     if (!user) {
-        return res.status(400).json({ msg: "Usuario no encontrado" });
+        throw new Error("User not found");
     }
 
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
-        return res.status(400).json({ msg: "Contraseña incorrecta" });
+        throw new Error("Incorrect password");
     }
 
     const payload = { id: user.id, role: user.role };

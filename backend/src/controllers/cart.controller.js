@@ -48,7 +48,8 @@ export const updateCart = async (req, res) => {
             req.params.cid,
             req.body.products
         );
-        res.sendSuccess(cart);
+        const populatedCart = await cart.populate("products.product");
+        res.sendSuccess(populatedCart);
     } catch (error) {
         res.sendServerError(error);
     }

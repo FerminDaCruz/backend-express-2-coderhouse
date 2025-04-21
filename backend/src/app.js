@@ -1,9 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
 import passport from "passport";
-import authRoutes from "./routes/authRoutes.js";
-import productsRouter from "./routes/productRoutes.js";
-import cartsRouter from "./routes/cartRoutes.js";
+import authRoutes from "./routes/auth.routes.js";
+import productsRouter from "./routes/product.routes.js";
+import cartsRouter from "./routes/cart.routes.js";
 import configurePassport from "./config/passport.js";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -27,12 +27,7 @@ mongoose
     .catch((err) => console.error("Error conectando a MongoDB: ", err));
 
 app.use(express.json());
-app.use(
-    cors({
-        origin: FRONTEND_URL,
-        credentials: true,
-    })
-);
+app.use(cors());
 
 app.use(passport.initialize());
 configurePassport(passport);

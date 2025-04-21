@@ -3,18 +3,18 @@ import * as userService from "../services/user.service.js";
 export const register = async (req, res) => {
     try {
         const result = await userService.registerUser(req.body);
-        res.sendCreated("Usuario registrado");
+        return res.sendCreated("Usuario registrado", result);
     } catch (error) {
-        res.sendServerError(error);
+        return res.sendServerError(error.message);
     }
 };
 
 export const login = async (req, res) => {
     try {
         const token = await userService.loginUser(req.body);
-        res.sendSuccess(token);
+        return res.sendSuccess(token);
     } catch (error) {
-        res.sendClientError(error);
+        return res.sendClientError(error.message);
     }
 };
 
