@@ -30,6 +30,10 @@ switch (process.env.PERSISTENCE) {
         productDao = new MemoryProductDao();
         cartDao = new MemoryCartDao();
         break;
+    default:
+        throw new Error(
+            "configure la persistencia en las variables de entorno"
+        );
 }
 
 export { userDao, productDao, cartDao };

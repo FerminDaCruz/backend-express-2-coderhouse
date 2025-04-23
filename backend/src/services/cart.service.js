@@ -1,4 +1,5 @@
 import { cartDao, productDao } from "../dao/factory.js";
+import { cartDTO } from "../dto/CartDTO.js";
 
 export const createCart = async () => {
     return await cartDao.create();
@@ -7,7 +8,7 @@ export const createCart = async () => {
 export const getCartById = async (cid) => {
     const cart = await cartDao.getById(cid);
     if (!cart) throw new Error("Cart not found");
-    return cart;
+    return cartDTO(cart);
 };
 
 export const addProductToCart = async (cid, pid) => {
@@ -17,16 +18,23 @@ export const addProductToCart = async (cid, pid) => {
     const product = await productDao.getById(pid);
     if (!product) throw new Error("Product not found");
 
-    const productIndex = cart.products.findIndex(
-        (p) => p.product.toString() === pid.toString()
-    );
+    const productIndex = cart.products.findIndex((p) => {
+        const idA = p.product._id
+            ? p.product._id.toString()
+            : p.product.toString();
+        const idB = pid.toString();
+
+        return idA === idB;
+    });
     if (productIndex !== -1) {
         cart.products[productIndex].quantity += 1;
     } else {
         cart.products.push({ product: pid, quantity: 1 });
     }
-    const updatedCart = await cart.save();
-    return updatedCart;
+
+    await cart.save();
+    const populatedCart = await cartDao.getById(cart._id);
+    return cartDTO(populatedCart);
 };
 
 export const deleteProductFromCart = async (cid, pid) => {
@@ -34,7 +42,9 @@ export const deleteProductFromCart = async (cid, pid) => {
     if (!cart) throw new Error("Cart not found");
 
     cart.products = cart.products.filter((p) => !p.product.equals(pid));
-    return await cart.save();
+
+    const updatedCart = await cart.save();
+    return cartDTO(updatedCart);
 };
 
 export const updateCart = async (cid, products) => {
@@ -42,7 +52,8 @@ export const updateCart = async (cid, products) => {
     if (!cart) throw new Error("Cart not found");
 
     cart.products = products;
-    return await cart.save();
+    const updatedCart = await cart.save();
+    return cartDTO(updatedCart);
 };
 
 export const updateProductFromCart = async (cid, pid, quantity) => {
@@ -54,12 +65,14 @@ export const updateProductFromCart = async (cid, pid, quantity) => {
 
     cart.products[productIndex].quantity = quantity;
 
-    return await cart.save();
+    const updatedCart = await cart.save();
+    return cartDTO(updatedCart);
 };
 
 export const clearCart = async (cid) => {
     const cart = await cartDao.getById(cid);
     if (!cart) throw new Error("Cart not found");
     cart.products = [];
-    return await cart.save();
+    const updatedCart = await cart.save();
+    return cartDTO(updatedCart);
 };
