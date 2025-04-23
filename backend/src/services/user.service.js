@@ -1,6 +1,6 @@
-import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { userDao } from "../dao/factory.js";
 
 export const registerUser = async ({
     first_name,
@@ -11,14 +11,14 @@ export const registerUser = async ({
     cart,
     role,
 }) => {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await userDao.getByEmail(email);
     if (existingUser) {
         throw new Error("the user already exists");
     }
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    const newUser = new User({
+    const newUserData = {
         first_name,
         last_name,
         email,
@@ -26,15 +26,15 @@ export const registerUser = async ({
         password: hashedPassword,
         cart,
         role,
-    });
+    };
 
-    const savedUser = await newUser.save();
+    const savedUser = await userDao.create(newUserData);
 
     return savedUser;
 };
 
 export const loginUser = async ({ email, password }) => {
-    const user = await User.findOne({ email });
+    const user = await userDao.getByEmail(email);
     if (!user) {
         throw new Error("User not found");
     }

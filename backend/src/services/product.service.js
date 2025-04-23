@@ -1,3 +1,4 @@
+import { productDao } from "../dao/factory.js";
 import Product from "../models/Product.js";
 
 export const getProducts = async ({
@@ -24,25 +25,23 @@ export const getProducts = async ({
 
 export const createProduct = async (product) => {
     const newProduct = new Product(product);
-    return await newProduct.save();
+    return await productDao.create(newProduct);
 };
 
 export const getProductById = async (pid) => {
-    const product = await Product.findById(pid);
+    const product = await productDao.getById(pid);
     if (!product) throw new Error("Product not found");
     return product;
 };
 
 export const updateProduct = async (pid, product) => {
-    const updatedProduct = await Product.findByIdAndUpdate(pid, product, {
-        new: true,
-    });
+    const updatedProduct = await productDao.update(pid, product);
     if (!updatedProduct) throw new Error("Product not found");
     return updatedProduct;
 };
 
 export const deleteProduct = async (pid) => {
-    const deletedProduct = await Product.findByIdAndDelete(pid);
+    const deletedProduct = await productDao.delete(pid);
     if (!deletedProduct) throw new Error("Product not found");
     return deletedProduct;
 };
