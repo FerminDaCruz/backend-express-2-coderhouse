@@ -23,9 +23,18 @@ export default class ProductRepository {
         return await this.dao.delete(id);
     }
 
-    async paginate(query, options) {
+    async getPaginateProducts({ page, limit, category, available, sort }) {
+        const query = {};
+        if (category) query.category = category;
+        if (available !== undefined) query.available = available === "true";
+
+        const sortOptions = { asc: { price: 1 }, desc: { price: -1 } };
+        const options = {
+            page: parseInt(page),
+            limit: parseInt(limit),
+            sort: sortOptions[sort] || {},
+        };
+
         return await this.dao.paginate(query, options);
     }
-
-    // Cualquier lógica extra que combine múltiples DAO calls también va acá
 }

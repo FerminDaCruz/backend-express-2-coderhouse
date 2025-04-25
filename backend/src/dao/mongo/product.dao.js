@@ -20,4 +20,8 @@ export default class MongoProductDao {
     async delete(id) {
         return await Product.findByIdAndDelete(id);
     }
+
+    async paginate(query, options) {
+        return await Product.paginate(query, options);
+    }
 }

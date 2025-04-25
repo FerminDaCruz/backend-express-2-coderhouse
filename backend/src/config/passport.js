@@ -1,24 +1,50 @@
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import dotenv from "dotenv";
-import { UserRepository } from "../repositories/repositories.js";
+import { userRepository } from "../repositories/repositories.js";
+import { userDTO } from "../dto/UserDTO.js";
+import cookieExtractor from "../utils/cookieExtractor.js";
 
 dotenv.config();
 
 export default function configurePassport(passport) {
-    const options = {
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    const getJwtStrategyOptions = (extractor) => ({
+        jwtFromRequest: extractor,
         secretOrKey: process.env.JWT_SECRET,
-    };
+    });
 
     passport.use(
-        new JwtStrategy(options, async (jwt_payload, done) => {
-            try {
-                const user = await UserRepository.getById(jwt_payload.id);
-                if (user) return done(null, user);
-                return done(null, false);
-            } catch (error) {
-                return done(error, false);
+        "jwt",
+        new JwtStrategy(
+            getJwtStrategyOptions(ExtractJwt.fromAuthHeaderAsBearerToken()),
+            async (jwt_payload, done) => {
+                try {
+                    const user = await userRepository.getById(jwt_payload.id);
+                    if (!user) {
+                        return done(null, false, { message: "User not found" });
+                    }
+                    return done(null, userDTO(user));
+                } catch (error) {
+                    return done(error, false);
+                }
             }
-        })
+        )
+    );
+
+    passport.use(
+        "current",
+        new JwtStrategy(
+            getJwtStrategyOptions(cookieExtractor),
+            async (jwt_payload, done) => {
+                try {
+                    const user = await userRepository.getById(jwt_payload.id);
+                    if (!user) {
+                        return done(null, false, { message: "User not found" });
+                    }
+                    return done(null, userDTO(user));
+                } catch (error) {
+                    return done(error, false);
+                }
+            }
+        )
     );
 }

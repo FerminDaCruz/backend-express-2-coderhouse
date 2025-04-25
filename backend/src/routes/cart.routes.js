@@ -8,20 +8,53 @@ import {
     updateCart,
     updateProductFromCart,
 } from "../controllers/cart.controller.js";
+import { authorizeCartOwner } from "../middlewares/authorizeCartOwner.js";
+import passport from "passport";
+
 const router = Router();
 
 router.post("/", createCart);
 
-router.get("/:cid", getCartById);
+router.get(
+    "/:cid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    getCartById
+);
 
-router.post("/:cid/products/:pid", addProductToCart);
+router.post(
+    "/:cid/products/:pid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    addProductToCart
+);
 
-router.delete("/:cid/products/:pid", deleteProductFromCart);
+router.delete(
+    "/:cid/products/:pid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    deleteProductFromCart
+);
 
-router.put("/:cid", updateCart);
+router.put(
+    "/:cid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    updateCart
+);
 
-router.put("/:cid/products/:pid", updateProductFromCart);
+router.put(
+    "/:cid/products/:pid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    updateProductFromCart
+);
 
-router.delete("/:cid", clearCart);
+router.delete(
+    "/:cid",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    clearCart
+);
 
 export default router;
