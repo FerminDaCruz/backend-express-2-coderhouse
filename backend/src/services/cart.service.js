@@ -2,10 +2,12 @@ import { cartDTO } from "../dto/CartDTO.js";
 import {
     cartRepository,
     productRepository,
+    userRepository,
 } from "../repositories/repositories.js";
 
 export const createCart = async () => {
-    return await cartRepository.create();
+    const cart = await cartRepository.create();
+    return cart;
 };
 
 export const getCartById = async (cid) => {
@@ -78,4 +80,52 @@ export const clearCart = async (cid) => {
     cart.products = [];
     const updatedCart = await cart.save();
     return cartDTO(updatedCart);
+};
+
+export const purchaseCart = async (cid, userEmail) => {
+    const cart = await cartRepository.getById(cid);
+    if (!cart) throw new Error("Cart not found");
+
+    const productsNotProcessed = [];
+    let totalAmount = 0;
+
+    const purchasableProducts = [];
+
+    for (const cartItem of cart.products) {
+        const product = await productRepository.getById(cartItem.product._id);
+
+        if (!product) continue;
+
+        if (product.stock >= cartItem.quantity) {
+            totalAmount += product.price * cartItem.quantity;
+            product.stock -= cartItem.quantity;
+            await productRepository.update(product._id, {
+                stock: product.stock,
+            });
+            purchasableProducts.push(cartItem);
+        } else {
+            productsNotProcessed.push(cartItem.product._id);
+        }
+    }
+
+    let ticket = null;
+    if (purchasableProducts.length > 0) {
+        ticket = await ticketRepository.create({
+            amount: totalAmount,
+            purchaser: userEmail,
+        });
+    }
+
+    const remainingProducts = cart.products.filter((cartItem) =>
+        productsNotProcessed.includes(cartItem.product._id.toString())
+    );
+
+    cart.products = remainingProducts;
+    await cartRepository.update(cid, cart);
+
+    return {
+        message: "Compra procesada",
+        ticket,
+        productsNotProcessed,
+    };
 };

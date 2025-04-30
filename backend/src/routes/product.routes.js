@@ -20,12 +20,7 @@ router.post(
     createProduct
 );
 
-router.get(
-    "/:pid",
-    passport.authenticate("current", { session: false }),
-    authorizeAdmin(),
-    getProductById
-);
+router.get("/:pid", getProductById);
 
 router.put(
     "/:pid",

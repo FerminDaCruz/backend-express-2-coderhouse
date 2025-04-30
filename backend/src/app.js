@@ -8,6 +8,7 @@ import configurePassport from "./config/passport.js";
 import dotenv from "dotenv";
 import cors from "cors";
 import customResponse from "./middlewares/customResponse.js";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ mongoose
 
 app.use(express.json());
 app.use(cors());
-
+app.use(cookieParser());
 app.use(passport.initialize());
 configurePassport(passport);
 

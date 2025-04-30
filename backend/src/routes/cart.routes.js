@@ -7,13 +7,18 @@ import {
     getCartById,
     updateCart,
     updateProductFromCart,
+    purchaseCart,
 } from "../controllers/cart.controller.js";
 import { authorizeCartOwner } from "../middlewares/authorizeCartOwner.js";
 import passport from "passport";
 
 const router = Router();
 
-router.post("/", createCart);
+router.post(
+    "/",
+    passport.authenticate("current", { session: false }),
+    createCart
+);
 
 router.get(
     "/:cid",
@@ -55,6 +60,13 @@ router.delete(
     passport.authenticate("current", { session: false }),
     authorizeCartOwner(),
     clearCart
+);
+
+router.post(
+    "/:cid/purchase",
+    passport.authenticate("current", { session: false }),
+    authorizeCartOwner(),
+    purchaseCart
 );
 
 export default router;

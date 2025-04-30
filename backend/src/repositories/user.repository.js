@@ -14,4 +14,8 @@ export default class UserRepository {
     async getById(id) {
         return await this.dao.getById(id);
     }
+
+    async update(userId, updates) {
+        return await this.dao.update(userId, updates);
+    }
 }

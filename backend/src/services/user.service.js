@@ -46,3 +46,22 @@ export const loginUser = async ({ email, password }) => {
 
     return generateToken({ id: user.id, role: user.role });
 };
+
+export const updateUserProfile = async (userId, updates) => {
+    try {
+        const user = await userRepository.getById(userId);
+        if (!user) throw new Error("User not found");
+
+        Object.keys(
+            updates.forEach((key) => {
+                user[key] = updates[key];
+            })
+        );
+
+        await user.save();
+
+        return user;
+    } catch (error) {
+        throw new Error(error);
+    }
+};

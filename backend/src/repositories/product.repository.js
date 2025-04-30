@@ -23,10 +23,23 @@ export default class ProductRepository {
         return await this.dao.delete(id);
     }
 
-    async getPaginateProducts({ page, limit, category, available, sort }) {
+    async getPaginateProducts({
+        page = 1,
+        limit = 10,
+        category,
+        available,
+        sort,
+        name,
+    }) {
         const query = {};
         if (category) query.category = category;
-        if (available !== undefined) query.available = available === "true";
+
+        if (available !== undefined)
+            query.stock = available === "true" ? { $gt: 0 } : { $eq: 0 };
+
+        if (name) {
+            query.name = { $regex: name, $options: "i" };
+        }
 
         const sortOptions = { asc: { price: 1 }, desc: { price: -1 } };
         const options = {

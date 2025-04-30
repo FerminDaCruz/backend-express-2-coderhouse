@@ -4,7 +4,7 @@ export const cartDTO = (cart) => {
 
         return {
             id: product._id,
-            name: product.title,
+            name: product.name,
             price: product.price,
             quantity: item.quantity,
             subtotal: product.price * item.quantity,

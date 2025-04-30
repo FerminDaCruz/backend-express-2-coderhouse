@@ -1,3 +1,7 @@
 export default function cookieExtractor(req) {
-    return req?.cookies?.token || null;
+    let token = null;
+    if (req && req.cookies) {
+        token = req.cookies.jwt;
+    }
+    return token;
 }

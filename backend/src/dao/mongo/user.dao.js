@@ -12,4 +12,11 @@ export default class MongoUserDao {
     async create(userData) {
         return await User.create(userData);
     }
+
+    async update(userId, updates) {
+        console.log("-> Actualizando usuario:", userId, updates);
+        return await User.findOneAndUpdate({ _id: userId }, updates, {
+            new: true,
+        });
+    }
 }

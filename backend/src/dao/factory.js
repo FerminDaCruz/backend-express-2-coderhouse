@@ -5,6 +5,7 @@ dotenv.config();
 let userDao;
 let productDao;
 let cartDao;
+let ticketDao;
 
 switch (process.env.PERSISTENCE) {
     case "MONGO":
@@ -13,10 +14,14 @@ switch (process.env.PERSISTENCE) {
             "./mongo/product.dao.js"
         );
         const { default: MongoCartDao } = await import("./mongo/cart.dao.js");
+        const { default: MongoTicketDao } = await import(
+            "./mongo/ticket.dao.js"
+        );
 
         userDao = new MongoUserDao();
         productDao = new MongoProductDao();
         cartDao = new MongoCartDao();
+        ticketDao = new MongoTicketDao();
         break;
 
     case "MEMORY":
@@ -25,10 +30,14 @@ switch (process.env.PERSISTENCE) {
             "./memory/product.dao.js"
         );
         const { default: MemoryCartDao } = await import("./memory/cart.dao.js");
+        const { default: MemoryTicketDao } = await import(
+            "./memory/ticket.dao.js"
+        );
 
         userDao = new MemoryUserDao();
         productDao = new MemoryProductDao();
         cartDao = new MemoryCartDao();
+        ticketDao = new MemoryTicketDao();
         break;
     default:
         throw new Error(
@@ -36,4 +45,4 @@ switch (process.env.PERSISTENCE) {
         );
 }
 
-export { userDao, productDao, cartDao };
+export { userDao, productDao, cartDao, ticketDao };
