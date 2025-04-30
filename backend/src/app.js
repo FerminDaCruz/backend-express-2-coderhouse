@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import customResponse from "./middlewares/customResponse.js";
 import cookieParser from "cookie-parser";
+import { corsOptions } from "./config/corsConfig.js";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ mongoose
     .catch((err) => console.error("Error conectando a MongoDB: ", err));
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(passport.initialize());
 configurePassport(passport);
