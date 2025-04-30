@@ -1,0 +1,71 @@
+@use "./variables" as v;
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+/* Definir la fuente base */
+body {
+    font-family: v.$font-primary;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased; /* Mejora la suavidad en las fuentes en Safari */
+    -moz-osx-font-smoothing: grayscale; /* Mejora la suavidad en las fuentes en Firefox */
+}
+
+/* Eliminar estilos predeterminados de listas */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Eliminar enlaces subrayados y establecer color predeterminado */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Eliminar bordes de elementos de formulario */
+input,
+button,
+textarea,
+select {
+    border: none;
+    outline: none;
+}
+
+/* Establecer una altura mínima para html y body */
+html,
+body {
+    height: 100%;
+}
+
+/* Configurar imágenes */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Configurar tablas */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 8px;
+}
+
+/* Evitar desbordamientos */
+* {
+    overflow-wrap: break-word;
+}

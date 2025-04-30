@@ -43,15 +43,16 @@ export default function Register() {
     };
 
     return (
-        <div>
-            <h2>Registro</h2>
-            <form onSubmit={handleSubmit}>
+        <div className="register">
+            <h2 className="register__title">Registro</h2>
+            <form onSubmit={handleSubmit} className="register__form">
                 <input
                     type="text"
                     name="first_name"
                     placeholder="Nombre"
                     onChange={handleChange}
                     required
+                    className="register__input"
                 />
                 <input
                     type="text"
@@ -59,6 +60,7 @@ export default function Register() {
                     placeholder="Apellido"
                     onChange={handleChange}
                     required
+                    className="register__input"
                 />
                 <input
                     type="email"
@@ -66,6 +68,7 @@ export default function Register() {
                     placeholder="Correo"
                     onChange={handleChange}
                     required
+                    className="register__input"
                 />
                 <input
                     type="number"
@@ -73,6 +76,7 @@ export default function Register() {
                     placeholder="Edad"
                     onChange={handleChange}
                     required
+                    className="register__input"
                 />
                 <input
                     type="password"
@@ -80,8 +84,11 @@ export default function Register() {
                     placeholder="Contraseña"
                     onChange={handleChange}
                     required
+                    className="register__input"
                 />
-                <button type="submit">Registrarse</button>
+                <button type="submit" className="register__submit">
+                    Registrarse
+                </button>
             </form>
         </div>
     );
