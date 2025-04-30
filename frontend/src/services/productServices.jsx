@@ -16,7 +16,9 @@ export async function getPaginatedProducts({
     if (sort) params.append("sort", sort);
     if (name) params.append("name", name);
 
-    const response = await fetch(`${API_URL}/products?${params.toString()}`);
+    const response = await fetch(
+        `${API_URL}/api/products?${params.toString()}`
+    );
 
     if (!response.ok) {
         throw new Error("Error fetching products");
