@@ -17,14 +17,29 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     try {
         const token = await userService.loginUser(req.body);
-        return res.sendSuccess(token);
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            secure: false,
+            sameSite: "Strict",
+            maxAge: 24 * 60 * 60 * 1000,
+        });
+        return res.sendSuccess("Login successfully");
     } catch (error) {
-        return res.sendClientError(error.message);
+        return res.sendServerError(error.message);
+    }
+};
+
+export const logout = (req, res) => {
+    try {
+        res.clearCookie("jwt");
+        return res.sendSuccess("Logout successfully");
+    } catch (error) {
+        return res.sendServerError(error);
     }
 };
 
 export const getProfile = (req, res) => {
-    res.json({ user: req.user });
+    res.sendSuccess({ user: req.user });
 };
 
 export const updateProfile = async (req, res) => {
