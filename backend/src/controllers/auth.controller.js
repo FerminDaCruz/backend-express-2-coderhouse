@@ -19,8 +19,8 @@ export const login = async (req, res) => {
         const token = await userService.loginUser(req.body);
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: false,
-            sameSite: "Strict",
+            secure: true,
+            sameSite: "None",
             maxAge: 24 * 60 * 60 * 1000,
         });
         return res.sendSuccess("Login successfully");
