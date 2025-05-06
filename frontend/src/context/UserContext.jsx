@@ -19,7 +19,7 @@ export function UserProvider({ children }) {
         try {
             const { user } = await getUser();
             setUser(user);
-            const cartData = await getUserCart();
+            const cartData = await getUserCart(user.cart);
             setCart(cartData);
         } catch (err) {
             console.error(err);

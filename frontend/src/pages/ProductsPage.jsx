@@ -1,10 +1,10 @@
-import usePaginatedProducts from "../../hooks/usePaginatedProducts";
-import SearchBar from "./SearchBar";
-import ProductList from "./ProductList";
-import Pagination from "./Pagination";
-import Filters from "./Filters";
+import Filters from "../components/products/Filters";
+import SearchBar from "../components/products/SearchBar";
+import Pagination from "../components/products/Pagination";
+import ProductList from "../components/products/ProductList";
+import usePaginatedProducts from "../hooks/usePaginatedProducts";
 
-export default function Main() {
+export default function ProductsPage() {
     const { products, pagination, loading, error, updateFilters } =
         usePaginatedProducts();
 

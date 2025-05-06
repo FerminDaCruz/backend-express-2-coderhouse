@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useUser } from "../../context/UserContext.jsx";
 
-export default function RegisterForm() {
+export default function RegisterForm({ changeMode }) {
     const { register } = useUser();
     const [repeatedPassword, setRepeatedPassword] = useState("");
     const [formData, setFormData] = useState({
@@ -105,6 +105,7 @@ export default function RegisterForm() {
                 {error && <p>{error}</p>}
                 <button type="submit">Enviar</button>
             </form>
+            <button onClick={changeMode}>Iniciar Sesión</button>
         </div>
     );
 }

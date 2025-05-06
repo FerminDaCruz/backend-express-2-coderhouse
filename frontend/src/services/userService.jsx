@@ -15,7 +15,7 @@ export async function loginUser(credentials) {
 }
 
 export async function logoutUser() {
-    const res = await fetch("/api/sessions/logout", {
+    const res = await fetch(`${API_URL}/api/auth/logout`, {
         method: "POST",
         credentials: "include",
     });
@@ -61,8 +61,8 @@ export async function updateUser(userData) {
     return json.data;
 }
 
-export async function getUserCart() {
-    const res = await fetch(`${API_URL}/api/cart`, {
+export async function getUserCart(cartId) {
+    const res = await fetch(`${API_URL}/api/carts/${cartId}`, {
         method: "GET",
         credentials: "include",
     });
